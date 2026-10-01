@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>粒子画廊</title>
+    <meta
+      name="description"
+      content="把图片上传进来就能变成可交互的粒子画作：悬停散开、移开重聚。纯前端，可直接部署到静态托管。"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307070c'/%3E%3Ccircle cx='11' cy='12' r='2.6' fill='%237c5cff'/%3E%3Ccircle cx='21' cy='16' r='2.6' fill='%2322d3ee'/%3E%3Ccircle cx='14' cy='23' r='2.6' fill='%23ff7ad9'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="titles">
+          <h1>粒子画廊</h1>
+          <p class="subtitle">
+            鼠标悬停，图片碎成粒子随光标散开；移开鼠标，粒子重新聚合成原图。
+          </p>
+        </div>
+        <div class="toolbar">
+          <span id="count" class="count">加载中…</span>
+          <button id="add-images" type="button" class="btn btn-primary">
+            <span class="btn-icon" aria-hidden="true">＋</span> 添加图片
+          </button>
+          <button
+            id="images-toggle"
+            type="button"
+            class="btn"
+            aria-expanded="false"
+            aria-controls="images-panel"
+          >
+            图片
+          </button>
+          <button
+            id="controls-toggle"
+            type="button"
+            class="btn"
+            aria-expanded="false"
+            aria-controls="controls"
+          >
+            参数
+          </button>
+          <button id="refresh" type="button" class="btn" title="重新读取内置图片列表">
+            <span class="btn-icon" aria-hidden="true">⟳</span> 刷新
+          </button>
+        </div>
+      </div>
+
+      <section id="images-panel" class="panel" hidden>
+        <div class="panel-head">
+          <strong>画廊图片</strong>
+          <span class="hint">
+            点卡片可放大查看并左右切换；上传的图片存在本机浏览器里，刷新不会丢，也不会上传到任何服务器。
+          </span>
+        </div>
+        <div id="thumbs" class="thumbs" aria-live="polite"></div>
+        <div class="panel-actions">
+          <button id="add-images-2" type="button" class="btn btn-primary">＋ 选择图片</button>
+          <button id="clear-uploads" type="button" class="btn">清空我上传的</button>
+          <span id="storage-note" class="hint"></span>
+        </div>
+      </section>
+
+      <section id="controls" class="panel panel-controls" hidden>
+        <label class="control">
+          <span>散开力度 <b data-out="force">55</b></span>
+          <input id="force" type="range" min="5" max="160" step="1" value="55" />
+        </label>
+        <label class="control">
+          <span>回归速度 <b data-out="return">0.12</b></span>
+          <input id="return" type="range" min="0.01" max="0.4" step="0.01" value="0.12" />
+        </label>
+        <label class="control">
+          <span>粒子密度 <b data-out="density">1.0</b>×</span>
+          <input id="density" type="range" min="0.4" max="2" step="0.1" value="1" />
+        </label>
+        <label class="control">
+          <span>噪点 <b data-out="noise">2</b></span>
+          <input id="noise" type="range" min="0" max="30" step="1" value="2" />
+        </label>
+        <label class="control">
+          <span>粒子形状</span>
+          <select id="shape">
+            <option value="circle" selected>圆形</option>
+            <option value="square">方块</option>
+            <option value="triangle">三角</option>
+          </select>
+        </label>
+        <button id="reset" type="button" class="btn">恢复默认</button>
+      </section>
+    </header>
+
+    <main>
+      <div id="banner" class="banner" hidden></div>
+
+      <div id="dropzone" class="dropzone" hidden>
+        <div class="dropzone-inner">
+          <strong>松手即添加</strong>
+          <span>支持 jpg / png / webp / gif / avif</span>
+        </div>
+      </div>
+
+      <div id="empty" class="empty" hidden>
+        <h2>画廊里还没有图片</h2>
+        <p>点右上角 <strong>「添加图片」</strong>，把电脑或手机里的图片传进来就能立刻看到粒子效果。</p>
+        <p class="hint">
+          也可以直接把图片拖到页面上，或者复制图片后在页面按 <kbd>Ctrl</kbd>+<kbd>V</kbd> 粘贴。
+        </p>
+        <p class="hint">
+          想换成「随项目一起部署的默认图片」：把文件放进 <code>images/</code>，运行
+          <code>node generate-list.js</code> 再刷新。
+        </p>
+      </div>
+
+      <div id="gallery" class="gallery" aria-live="polite"></div>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        粒子引擎：<code>package-particlefx</code> · 纯前端实现，无后端依赖 ·
+        <span id="footer-note">图片只保存在你自己的浏览器里</span>
+      </p>
+    </footer>
+
+    <input
+      id="file-input"
+      type="file"
+      accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/bmp"
+      multiple
+      hidden
+    />
+    <div id="lightbox"></div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

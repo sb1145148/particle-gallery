@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-10-01T17:04:47.293Z",
+  "count": 4,
+  "images": [
+    {
+      "file": "aurora.png",
+      "name": "aurora",
+      "src": "images/aurora.png",
+      "bytes": 263073
+    },
+    {
+      "file": "bubbles.png",
+      "name": "bubbles",
+      "src": "images/bubbles.png",
+      "bytes": 825407
+    },
+    {
+      "file": "geometric.png",
+      "name": "geometric",
+      "src": "images/geometric.png",
+      "bytes": 39054
+    },
+    {
+      "file": "waves.png",
+      "name": "waves",
+      "src": "images/waves.png",
+      "bytes": 123255
+    }
+  ]
+}

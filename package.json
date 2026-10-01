@@ -1,0 +1,31 @@
+{
+  "name": "particle-gallery",
+  "version": "2.0.0",
+  "private": true,
+  "description": "粒子画廊：在网页里直接上传/切换图片，图片碎成粒子随鼠标散开、移开重聚。纯前端，可直接部署到静态托管。",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "python3 -m http.server 5173",
+    "start": "npx serve -l 5173 .",
+    "preview": "npx serve -l 5173 dist",
+    "list": "node generate-list.js",
+    "samples": "node scripts/generate-samples.js",
+    "vendor": "node scripts/vendor-lib.js",
+    "build": "node scripts/build-static.js",
+    "verify": "node verify.js"
+  },
+  "keywords": [
+    "particle",
+    "canvas",
+    "gallery",
+    "hover-effect",
+    "static-site"
+  ],
+  "dependencies": {
+    "package-particlefx": "^2.0.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

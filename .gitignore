@@ -1,0 +1,9 @@
+# 依赖装完即可用；粒子引擎已 vendor 到 vendor/，部署时不需要 node_modules
+node_modules/
+
+# 打包产物（由 npm run build 生成）
+dist/
+
+# 系统杂项
+.DS_Store
+Thumbs.db
